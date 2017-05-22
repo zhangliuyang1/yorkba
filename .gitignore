@@ -1,0 +1,16 @@
+*.class
+*.war
+*.jar
+*.iml
+.*
+.settings/
+target/
+bin/
+build/
+.DS_Store
+data/
+
+
+
+#可以提交.gitignore文件
+!.gitignore
