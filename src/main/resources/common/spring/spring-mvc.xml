@@ -84,4 +84,34 @@
         </property>
     </bean>
 
+
+
+    <bean id="applicationParamIntercepter" class="com.sjzl.york.intercepter.ApplicationParamIntercepter">
+        <property name="urlExceptions">
+            <list></list>
+        </property>
+
+
+        <property name="hostExceptions">
+            <list>
+                <value>0.0.0.0</value>
+                <value>127.0.0.1</value>
+                <value>test.yorkba.cn</value>
+            </list>
+        </property>
+
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean="applicationParamIntercepter"></ref>
+        </mvc:interceptor>
+
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean=""></ref>
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+
 </beans>
