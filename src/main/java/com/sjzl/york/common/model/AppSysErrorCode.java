@@ -15,7 +15,8 @@ package com.sjzl.york.common.model;
  */
 public enum AppSysErrorCode {
 
-    SUCCESS,//正确返回
+    SUCCESS,//正确返回1`\
+
     EXCEPTION,//功能执行异常,前端不提示,内部捕获
     INTERFACEDEPRECATED,//该版本的接口已经被遗弃
     ACCESSTOKENINVALID,//授权令牌失效

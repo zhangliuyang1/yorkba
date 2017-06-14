@@ -1,4 +1,4 @@
-package com.sjzl.york.common;
+package com.sjzl.york.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

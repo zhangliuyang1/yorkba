@@ -47,7 +47,7 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
 
         Map<String,String> params = new HashMap<String, String>();
         Enumeration<String> keys = request.getParameterNames();
-        if (keys.hasMoreElements()){
+        while (keys.hasMoreElements()){
             String key = keys.nextElement();
             params.put(key,request.getParameter(key).toString());
         }
@@ -60,6 +60,7 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
         //验证不通过
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("code", AppSysErrorCode.APPLICATIONPARAMINVALID.ordinal());
+        result.put("message","异常信息");
         result.put("data",new ViewRequestInvalidError("系统参数无效，请联系服务人员。"));
         response.setHeader("Content-Type","text/html;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(result));

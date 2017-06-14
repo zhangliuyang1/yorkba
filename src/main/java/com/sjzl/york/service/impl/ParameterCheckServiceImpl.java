@@ -1,11 +1,11 @@
 package com.sjzl.york.service.impl;
 
-import com.sjzl.york.common.MD5Util;
+import com.sjzl.york.util.MD5Util;
 import com.sjzl.york.service.IParameterCheckService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeSet;
 
 /**
  * @author zhangliuyang
@@ -41,10 +41,12 @@ public class ParameterCheckServiceImpl implements IParameterCheckService {
             return "";
         }
 
-        TreeSet<String> treeSet =(TreeSet<String>) params.keySet();
+//        TreeSet<String> treeSet =(TreeSet<String>) params.keySet();
+        String[] keyArray = params.keySet().toArray(new String[params.size()]);
+        Arrays.sort(keyArray);
 //        String[] keyArray = params.keySet().toArray(new String[0]);
         StringBuilder sb = new StringBuilder();
-        for (String key : treeSet){
+        for (String key : keyArray){
             if (!SIGN_STRING.equalsIgnoreCase(key)){
                 sb.append(key);
                 sb.append("=");

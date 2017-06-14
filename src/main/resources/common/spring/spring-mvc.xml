@@ -85,6 +85,18 @@
     </bean>
 
 
+    <bean id="accessTokenIntercepter" class="com.sjzl.york.intercepter.AccessTokenIntercepter">
+        <property name="urlExceptions">
+            <list></list>
+        </property>
+
+        <property name="hostExceptions">
+            <list>
+                <value>0.0.0.0</value>
+                <value>127.0.0.1</value>
+            </list>
+        </property>
+    </bean>
 
     <bean id="applicationParamIntercepter" class="com.sjzl.york.intercepter.ApplicationParamIntercepter">
         <property name="urlExceptions">
@@ -108,6 +120,10 @@
             <ref bean="applicationParamIntercepter"></ref>
         </mvc:interceptor>
 
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean="accessTokenIntercepter"></ref>
+        </mvc:interceptor>
         <!--<mvc:interceptor>
             <mvc:mapping path="/**"/>
             <ref bean=""></ref>
