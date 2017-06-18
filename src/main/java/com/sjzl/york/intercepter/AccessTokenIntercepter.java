@@ -1,13 +1,24 @@
 package com.sjzl.york.intercepter;
 
+import com.sjzl.york.common.model.AppSysErrorCode;
+import com.sjzl.york.common.view.ViewRequestInvalidError;
+import com.sjzl.york.context.UserContext;
+import com.sjzl.york.model.user.PcUser;
+import com.sjzl.york.service.user.IUserService;
+import com.sjzl.york.util.StringUtil;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhangliuyang
@@ -18,6 +29,9 @@ public class AccessTokenIntercepter extends HandlerInterceptorAdapter{
 
     private static final Logger logger = LoggerFactory.getLogger("AccessLogFilter");
 
+
+    @Autowired
+    private IUserService userService;
 
     private List<String> hostExceptions;
     private List<String> urlExceptions;
@@ -33,6 +47,14 @@ public class AccessTokenIntercepter extends HandlerInterceptorAdapter{
     @Override
     public boolean preHandle(final HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        String accessToken = request.getParameter("accessToken");
+        if (!StringUtil.isEmpty(accessToken)){
+            PcUser pcUser = userService.getUserByAccessToken(accessToken);
+            if (pcUser != null){
+                UserContext.setUser(pcUser);
+            }
+        }
+
         //跳过不需要验证的请求
         final String dispatchPath = request.getPathInfo();
         for (String regx : urlExceptions){
@@ -45,8 +67,28 @@ public class AccessTokenIntercepter extends HandlerInterceptorAdapter{
             return true;
         }
 
+        //验证授权令牌
+        if (!StringUtil.isEmpty(accessToken)) {
+            Map<String, String> params = new HashMap<String, String>();
+            Enumeration<String> keys = request.getParameterNames();
+            while (keys.hasMoreElements()) {
+                String key = keys.nextElement();
+                params.put(key, request.getParameter(key).toString());
+            }
+
+            if (UserContext.getUser() != null) {
+                return true;
+            }
+        }
         logger.info("localAddr:" + request.getLocalAddr());
 
+        //验证不通过
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("code", AppSysErrorCode.ACCESSTOKENINVALID);
+        result.put("data",new ViewRequestInvalidError("授权令牌失效，请重新登陆"));
+        response.setHeader("Content-Type","text/html;charset=UTF-8");
+        response.getWriter().write(JSONObject.fromObject(result).toString());
+        response.getWriter().close();
         return super.preHandle(request, response, handler);
     }
 

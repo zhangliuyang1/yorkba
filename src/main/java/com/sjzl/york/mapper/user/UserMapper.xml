@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sjzl.york.dao.user.IUserDao">
+
+
+
+    <select id="getUserByUserName" parameterType="java.lang.String" resultType="com.sjzl.york.model.user.PcUser">
+        select user_id as userId,user_name as userName,pass_word as passWord,access_token as accessToken,
+        refresh_token as refreshToken,nick_name as nickName,real_name as realName,profile as profile,enabled  as enabled,
+        regist_time as registTime,last_login_time as lastLoginTime,phone_num as phoneNum,gender as dender
+        from users where user_name = #{userName}
+    </select>
+
+    <select id="getUserByAccessToken" parameterType="java.lang.String" resultType="com.sjzl.york.model.user.PcUser">
+        select user_id as userId,user_name as userName,pass_word as passWord,access_token as accessToken,
+        refresh_token as refreshToken,nick_name as nickName,real_name as realName,profile as profile,enabled  as enabled,
+        regist_time as registTime,last_login_time as lastLoginTime,phone_num as phoneNum,gender as dender
+        from users where access_token = #{accessToken}
+    </select>
+
+    <insert id="insertUser" parameterType="com.sjzl.york.model.user.PcUser"
+            useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId">
+        insert into users (user_name,pass_word,access_token,refresh_token,nick_name,real_name,
+        profile,enabled,regist_time,phone_num,gender)
+        value (#{userName},#{passWord},#{accessToken},#{refreshToken},#{nickName},#{realName},
+        #{profile},#{enabled},#{registTime},#{phoneNum},#{gender})
+    </insert>
+
+    <update id="updateUserInfo" parameterType="com.sjzl.york.model.user.PcUser">
+        update users set nick_name=#{nickName},real_name=#{realName},profile=#{profile},gender=#{gender}
+        where user_id = #{userId}
+    </update>
+
+    <update id="loginUpdate" parameterType="com.sjzl.york.model.user.PcUser">
+        update  users set access_token=#{accessToken},refresh_token=#{refreshToken},last_login_time=#{lastLoginTime}
+        where user_id = #{userId}
+    </update>
+</mapper>

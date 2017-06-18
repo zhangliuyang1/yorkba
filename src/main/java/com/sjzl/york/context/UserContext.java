@@ -1,6 +1,7 @@
 package com.sjzl.york.context;
 
-import com.sjzl.york.model.PcUser;
+
+import com.sjzl.york.model.user.PcUser;
 
 /**
  * @author zhangliuyang

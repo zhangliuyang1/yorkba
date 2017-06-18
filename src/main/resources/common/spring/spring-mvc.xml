@@ -87,7 +87,9 @@
 
     <bean id="accessTokenIntercepter" class="com.sjzl.york.intercepter.AccessTokenIntercepter">
         <property name="urlExceptions">
-            <list></list>
+            <list>
+                <value>/user/regist.*</value>
+            </list>
         </property>
 
         <property name="hostExceptions">

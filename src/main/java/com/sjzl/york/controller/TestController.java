@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author zhangliuyang
@@ -30,5 +31,17 @@ public class TestController {
         result.put("code",0);
         result.put("data",tmp);
         return result;
+    }
+
+    public static void main(String[] args) {
+
+        Random random = new Random();
+        int a = random.nextInt(10000);
+        int b = new Random(System.currentTimeMillis())
+                .nextInt(10000);
+
+        System.out.println( a);
+        System.out.println( b);
+
     }
 }

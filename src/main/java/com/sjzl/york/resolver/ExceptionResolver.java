@@ -1,4 +1,4 @@
-package com.sjzl.york.Resolver;
+package com.sjzl.york.resolver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sjzl.york.common.model.AppSysErrorCode;
