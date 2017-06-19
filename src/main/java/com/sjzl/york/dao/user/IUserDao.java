@@ -1,7 +1,6 @@
 package com.sjzl.york.dao.user;
 
 import com.sjzl.york.model.user.PcUser;
-import javassist.bytecode.LineNumberAttribute;
 
 /**
  * @author zhangliuyang
