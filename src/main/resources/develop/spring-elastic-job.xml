@@ -10,13 +10,13 @@
                         http://www.dangdang.com/schema/ddframe/job
                         http://www.dangdang.com/schema/ddframe/job/job.xsd
                         ">
-	<!--configure registry center -->
+	<!--&lt;!&ndash;configure registry center &ndash;&gt;
 	<reg:zookeeper id="regCenter" server-lists="localhost:2181" namespace="dd-job-test" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
 
-	<!--configure job -->
+	&lt;!&ndash;configure job &ndash;&gt;
 	<job:simple id="JobDemo" class="com.sjzl.york.task.JobDemo"
 				registry-center-ref="regCenter" cron="0 0 0/1 * * ?"
 				sharding-total-count="1"
-				sharding-item-parameters="0=A" overwrite="true"/>
+				sharding-item-parameters="0=A" overwrite="true"/>-->
 </beans>
 
