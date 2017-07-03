@@ -40,7 +40,7 @@ public class PictureUploadController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/sys/uploadPicture",method = RequestMethod.POST)
+    @RequestMapping(value = "/picture/upload",method = RequestMethod.POST)
     @ResponseBody
     public RequestResult uploadPicture(MultipartHttpServletRequest request)throws Exception{
         RequestResult result = new RequestResult();
