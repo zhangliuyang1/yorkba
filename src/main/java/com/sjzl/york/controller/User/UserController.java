@@ -9,6 +9,7 @@ import com.sjzl.york.model.user.PcUser;
 import com.sjzl.york.model.view.user.ViewRegistAccountInfo;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.user.IUserService;
+import com.sjzl.york.sms.ChuangLanSmsUtil;
 import com.sjzl.york.util.GUIDUtil;
 import com.sjzl.york.util.MD5Util;
 import com.sjzl.york.util.StringUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -39,6 +41,8 @@ public class UserController {
     private IUserService userService;
     @Autowired
     private ITimeService timeService;
+    @Resource
+    private ChuangLanSmsUtil chuangLanSmsUtil;
 
     /**
      * 用户登陆
@@ -185,6 +189,8 @@ public class UserController {
         codeMap.put("varifyCode",verifyCode);
 
         //短信发送验证码---------
+        String content = "【世纪之旅】您的验证码是：" + verifyCode;
+        chuangLanSmsUtil.sendMessage(phoneNum,content);
 
 
         result.setCode(AppSysErrorCode.SUCCESS.ordinal());
