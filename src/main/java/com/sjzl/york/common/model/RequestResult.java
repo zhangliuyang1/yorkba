@@ -9,7 +9,7 @@ public class RequestResult {
 
     private Integer code;
     private String message;
-    private Object date;
+    private Object data;
 
     public Integer getCode() {
         return code;
@@ -27,11 +27,11 @@ public class RequestResult {
         this.message = message;
     }
 
-    public Object getDate() {
-        return date;
+    public Object getData() {
+        return data;
     }
 
-    public void setDate(Object date) {
-        this.date = date;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

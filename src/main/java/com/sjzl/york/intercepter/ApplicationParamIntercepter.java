@@ -2,6 +2,7 @@ package com.sjzl.york.intercepter;
 
 import com.alibaba.fastjson.JSON;
 import com.sjzl.york.common.model.AppSysErrorCode;
+import com.sjzl.york.common.model.RequestResult;
 import com.sjzl.york.common.view.ViewRequestInvalidError;
 import com.sjzl.york.service.IParameterCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,10 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
         }
 
         //验证不通过
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("code", AppSysErrorCode.APPLICATIONPARAMINVALID.ordinal());
-        result.put("message","异常信息");
-        result.put("data",new ViewRequestInvalidError("系统参数无效，请联系服务人员。"));
+        RequestResult result = new RequestResult();
+        result.setCode(AppSysErrorCode.APPLICATIONPARAMINVALID.ordinal());
+        result.setMessage("系统参数无效，请联系服务人员。");
+        result.setData(null);
         response.setHeader("Content-Type","text/html;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(result));
         response.getWriter().close();

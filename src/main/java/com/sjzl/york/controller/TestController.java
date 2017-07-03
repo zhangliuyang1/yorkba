@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -35,13 +36,17 @@ public class TestController {
 
     public static void main(String[] args) {
 
-        Random random = new Random();
+        /*int a = (int)Math.random()*499 + 500;
+        int b = (int)(Math.random()*499) + 500;*/
+        /*Random random = new Random();
         int a = random.nextInt(10000);
         int b = new Random(System.currentTimeMillis())
                 .nextInt(10000);
+*/
 
-        System.out.println( a);
-        System.out.println( b);
+        BigDecimal a = new BigDecimal(60);
+
+        System.out.println( a.add(new BigDecimal(8)).subtract(new BigDecimal(3)));
 
     }
 }

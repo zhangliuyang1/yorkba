@@ -1,6 +1,7 @@
 package com.sjzl.york.controller.User;
 
 import com.sjzl.york.common.model.AppSysErrorCode;
+import com.sjzl.york.common.model.RequestResult;
 import com.sjzl.york.common.view.ViewRequestInvalidError;
 import com.sjzl.york.common.view.ViewVerifyCode;
 import com.sjzl.york.context.UserContext;
@@ -46,31 +47,30 @@ public class UserController {
      */
     @RequestMapping(value = "/user/login",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> login(String userName,String passWord)throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
-
+    public RequestResult login(String userName, String passWord)throws Exception{
+        RequestResult result = new RequestResult();
         if (StringUtil.isEmpty(userName)){
-            result.put("code", AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("请输入手机号"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入手机号");
             return result;
         }
         if (StringUtil.isEmpty(passWord)){
-            result.put("code", AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("请输入用密码"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入用密码");
             return result;
         }
 
         PcUser pcUser = userService.getUserByUserName(userName);
 
         if (pcUser == null){
-            result.put("code", AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("该用户不存在"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该用户不存在");
             return result;
         }
         passWord = MD5Util.string2MD5(passWord);
         if (!passWord.equals(pcUser.getPassWord())){
-            result.put("code", 1);
-            result.put("data", new ViewRequestInvalidError("密码错误"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("密码错误");
             return result;
         }
 
@@ -86,8 +86,9 @@ public class UserController {
         accountInfo.setAccessToken(newAccessToken);
 
 
-        result.put("code",0);
-        result.put("data",accountInfo);
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(accountInfo);
+
         return result;
     }
 
@@ -99,23 +100,22 @@ public class UserController {
      */
     @RequestMapping(value = "/user/regist",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> regist(String userName,String passWord,String verifyCode)throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
-
+    public RequestResult regist(String userName,String passWord,String verifyCode)throws Exception{
+        RequestResult result = new RequestResult();
         if (StringUtil.isEmpty(userName)){
-            result.put("code", AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("请输入手机号"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入手机号");
             return result;
         }
         if (StringUtil.isEmpty(passWord)){
-            result.put("code", AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("请输入用密码"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入用密码");
             return result;
         }
 
         if (!validateAccountFormat(userName)){
-            result.put("code", 1);
-            result.put("data", new ViewRequestInvalidError("手机号格式不正确"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("手机号格式不正确");
             return result;
         }
 
@@ -127,8 +127,8 @@ public class UserController {
 
         PcUser checkUser = userService.getUserByUserName(userName);
         if (checkUser != null){
-            result.put("code",AppSysErrorCode.EXCEPTION);
-            result.put("data",new ViewRequestInvalidError("该账号已经注册"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该账号已经注册");
             return result;
         }
 
@@ -153,8 +153,8 @@ public class UserController {
         accountInfo.setAccessToken(pcUser.getAccessToken());
 
 
-        result.put("code",0);
-        result.put("data",accountInfo);
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(accountInfo);
         return result;
     }
 
@@ -165,17 +165,17 @@ public class UserController {
      */
     @RequestMapping(value = "/user/getVerifyCode",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getVarifyCode(String phoneNum)throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
+    public RequestResult getVarifyCode(String phoneNum)throws Exception{
+        RequestResult result = new RequestResult();
 
         if (!this.validateAccountFormat(phoneNum)) {
-            result.put("code", 1);
-            result.put("data", new ViewRequestInvalidError("手机号格式不正确"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("手机号格式不正确");
             return result;
         }
         if (validateAccountRegisted(phoneNum)){
-            result.put("code",1);
-            result.put("data",new ViewRequestInvalidError("该手机号已经注册"));
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该手机号已经注册");
             return result;
         }
 
@@ -187,8 +187,8 @@ public class UserController {
         //短信发送验证码---------
 
 
-        result.put("code",0);
-        result.put("data",new ViewVerifyCode(verifyCode));
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(new ViewVerifyCode(verifyCode));
         return result;
     }
 
@@ -200,19 +200,19 @@ public class UserController {
      */
     @RequestMapping(value = "/user/getUserInfo",method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,Object> getUserInfo(String accessToken)throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
+    public RequestResult getUserInfo(String accessToken)throws Exception{
+        RequestResult result = new RequestResult();
 
         PcUser pcUser = UserContext.getUser();
         if (pcUser == null){
-            result.put("code",AppSysErrorCode.ACCESSTOKENINVALID);
-            result.put("data",new ViewRequestInvalidError("授权令牌失效，请重新登陆"));
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
             return result;
         }
 
 
-        result.put("code",0);
-        result.put("data",pcUser);
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(pcUser);
         return result;
 
     }
@@ -225,20 +225,20 @@ public class UserController {
      */
     @RequestMapping(value = "/user/updateUserInfo",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> updateUserInfo(PcUser pcUser)throws Exception{
-        Map<String,Object> result = new HashMap<String,Object>();
+    public RequestResult updateUserInfo(PcUser pcUser)throws Exception{
+        RequestResult result = new RequestResult();
 
 
         if (UserContext.getUser() == null){
-            result.put("code",AppSysErrorCode.ACCESSTOKENINVALID);
-            result.put("data",new ViewRequestInvalidError("授权令牌失效，请重新登陆"));
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
             return result;
         }
 
         userService.updateUserInfo(pcUser);
 
-        result.put("code",0);
-        result.put("data",pcUser);
+
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
         return result;
 
     }

@@ -1,12 +1,12 @@
 package com.sjzl.york.intercepter;
 
+import com.alibaba.fastjson.JSON;
 import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.view.ViewRequestInvalidError;
+import com.sjzl.york.common.model.RequestResult;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.model.user.PcUser;
 import com.sjzl.york.service.user.IUserService;
 import com.sjzl.york.util.StringUtil;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,11 +83,12 @@ public class AccessTokenIntercepter extends HandlerInterceptorAdapter{
         logger.info("localAddr:" + request.getLocalAddr());
 
         //验证不通过
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("code", AppSysErrorCode.ACCESSTOKENINVALID);
-        result.put("data",new ViewRequestInvalidError("授权令牌失效，请重新登陆"));
+        RequestResult result = new RequestResult();
+        result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+        result.setMessage("授权令牌失效，请重新登陆");
+        result.setData(null);
         response.setHeader("Content-Type","text/html;charset=UTF-8");
-        response.getWriter().write(JSONObject.fromObject(result).toString());
+        response.getWriter().write(JSON.toJSONString(result));
         response.getWriter().close();
         return super.preHandle(request, response, handler);
     }
