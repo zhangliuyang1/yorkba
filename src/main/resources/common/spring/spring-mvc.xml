@@ -84,11 +84,17 @@
         </property>
     </bean>
 
+    <bean id="accessLogIntercepter" class="com.sjzl.york.intercepter.AccessLogIntercepter"></bean>
 
     <bean id="accessTokenIntercepter" class="com.sjzl.york.intercepter.AccessTokenIntercepter">
         <property name="urlExceptions">
             <list>
                 <value>/user/regist.*</value>
+                <value>/user/login.*</value>
+                <value>/user/getVerifyCode.*</value>
+                <value>/user/getCodeForgot</value>
+                <value>/user/checkVerifyCode</value>
+                <value>/user/resetPassWord</value>
             </list>
         </property>
 
@@ -117,7 +123,7 @@
     </bean>
 
     <mvc:interceptors>
-        <mvc:interceptor>
+        <mvc:interceptor >
             <mvc:mapping path="/**"/>
             <ref bean="applicationParamIntercepter"></ref>
         </mvc:interceptor>
@@ -126,10 +132,10 @@
             <mvc:mapping path="/**"/>
             <ref bean="accessTokenIntercepter"></ref>
         </mvc:interceptor>
-        <!--<mvc:interceptor>
+        <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <ref bean=""></ref>
-        </mvc:interceptor>-->
+            <ref bean="accessLogIntercepter"></ref>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 </beans>

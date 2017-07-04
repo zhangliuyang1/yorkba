@@ -35,4 +35,8 @@
         update  users set access_token=#{accessToken},refresh_token=#{refreshToken},last_login_time=#{lastLoginTime}
         where user_id = #{userId}
     </update>
+
+    <update id="updatePassWord">
+        update users set pass_word = #{passWord} where user_name = #{phoneNum}
+    </update>
 </mapper>

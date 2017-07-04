@@ -1,8 +1,8 @@
 package com.sjzl.york.resolver;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.view.ViewRequestInvalidError;
+import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.view.ViewRequestInvalidError;
 import com.sjzl.york.util.ExceptionPrintUtil;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;

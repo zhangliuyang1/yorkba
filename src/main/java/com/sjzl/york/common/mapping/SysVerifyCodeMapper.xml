@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sjzl.york.common.dao.SysVerifyCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.sjzl.york.common.model.SysVerifyCode" >
+    <result column="verify_code_key" property="verifyCodeKey" jdbcType="VARCHAR" />
+    <result column="verify_code" property="verifyCode" jdbcType="VARCHAR" />
+    <result column="from_ip" property="fromIp" jdbcType="VARCHAR" />
+    <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sjzl.york.common.model.SysVerifyCode" >
+    insert into sys_verify_code (verify_code_key, verify_code, from_ip, 
+      expire_time, create_time)
+    values (#{verifyCodeKey,jdbcType=VARCHAR}, #{verifyCode,jdbcType=VARCHAR}, #{fromIp,jdbcType=VARCHAR}, 
+      #{expireTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sjzl.york.common.model.SysVerifyCode" >
+    insert into sys_verify_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="verifyCodeKey != null" >
+        verify_code_key,
+      </if>
+      <if test="verifyCode != null" >
+        verify_code,
+      </if>
+      <if test="fromIp != null" >
+        from_ip,
+      </if>
+      <if test="expireTime != null" >
+        expire_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="verifyCodeKey != null" >
+        #{verifyCodeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyCode != null" >
+        #{verifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromIp != null" >
+        #{fromIp,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null" >
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getVerifyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from sys_verify_code where verify_code_key = #{verifyCodeKey}
+  </select>
+
+  <delete id="deleteCodeByVerifyCodeKey">
+    delete from sys_verify_code where verify_code_key = #{verifyCodeKey} and verify_code = #{verifyCode}
+  </delete>
+</mapper>

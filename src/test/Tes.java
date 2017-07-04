@@ -21,7 +21,7 @@ public class Tes {
     @Test
     public void sendMessage()throws Exception{
         String phoneNum = "18516993208";
-        String content = "【世纪之旅】测试验证码";
+        String content = "测试验证码";
 
         chuangLanSmsUtil.sendMessage(phoneNum,content);
     }

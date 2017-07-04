@@ -1,4 +1,4 @@
-package com.sjzl.york.common.model;
+package com.sjzl.york.core.model;
 
 /**
  * @author zhangliuyang

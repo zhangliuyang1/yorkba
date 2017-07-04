@@ -46,4 +46,9 @@ public class UserServiceImpl implements IUserService {
     public void updateUserInfo(PcUser pcUser) throws Exception {
         userDao.updateUserInfo(pcUser);
     }
+
+    @Override
+    public void updatePassWord(String phoneNum, String passWord) throws Exception {
+        userDao.updatePassWord(phoneNum, passWord);
+    }
 }

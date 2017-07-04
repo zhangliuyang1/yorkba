@@ -1,6 +1,7 @@
 package com.sjzl.york.dao.user;
 
 import com.sjzl.york.model.user.PcUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author zhangliuyang
@@ -18,4 +19,6 @@ public interface IUserDao {
     void updateUserInfo(PcUser user);
 
     void loginUpdate(PcUser user);
+
+    void updatePassWord(@Param("phoneNum") String phoneNum, @Param("passWord") String passWord);
 }

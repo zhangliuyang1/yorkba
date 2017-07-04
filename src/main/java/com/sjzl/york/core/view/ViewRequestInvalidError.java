@@ -1,4 +1,4 @@
-package com.sjzl.york.common.view;
+package com.sjzl.york.core.view;
 
 /**
  * @author zhangliuyang

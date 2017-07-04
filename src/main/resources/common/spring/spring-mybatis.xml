@@ -46,13 +46,14 @@
         <property name="mapperLocations">
             <array>
                 <value>classpath*:com/sjzl/york/mapper/**/*.xml</value>
+                <value>classpath*:com/sjzl/york/common/mapping/**/*.xml</value>
             </array>
         </property>
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.sjzl.york.dao"/>
+        <property name="basePackage" value="com.sjzl.york.dao,com.sjzl.york.common.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 

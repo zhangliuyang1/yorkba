@@ -1,6 +1,6 @@
 package com.sjzl.york.service.impl.upload;
 
-import com.sjzl.york.common.model.PictureUploadResult;
+import com.sjzl.york.core.model.PictureUploadResult;
 import com.sjzl.york.service.upload.IPictureUploadService;
 import com.sjzl.york.util.upload.ContentTypeExtentionResolver;
 import com.sjzl.york.util.ExceptionPrintUtil;

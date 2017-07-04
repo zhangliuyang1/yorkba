@@ -1,8 +1,8 @@
 package com.sjzl.york.controller.upload;
 
-import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.model.PictureUploadResult;
-import com.sjzl.york.common.model.RequestResult;
+import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.model.PictureUploadResult;
+import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.upload.IPictureUploadService;
 import com.sjzl.york.util.ExceptionPrintUtil;

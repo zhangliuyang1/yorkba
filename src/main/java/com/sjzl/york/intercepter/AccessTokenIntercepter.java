@@ -1,8 +1,8 @@
 package com.sjzl.york.intercepter;
 
 import com.alibaba.fastjson.JSON;
-import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.model.RequestResult;
+import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.model.user.PcUser;
 import com.sjzl.york.service.user.IUserService;

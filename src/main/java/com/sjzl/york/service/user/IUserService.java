@@ -20,4 +20,6 @@ public interface IUserService {
     void loginUpdate(PcUser user)throws Exception;
 
     void updateUserInfo(PcUser pcUser)throws Exception;
+
+    void updatePassWord(String phoneNum,String passWord)throws Exception;
 }

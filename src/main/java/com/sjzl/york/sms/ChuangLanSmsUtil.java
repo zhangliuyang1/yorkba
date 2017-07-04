@@ -1,6 +1,7 @@
 package com.sjzl.york.sms;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sjzl.york.util.ExceptionPrintUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,7 +83,7 @@ public class ChuangLanSmsUtil {
 					sb.append(line);
 				}
 				br.close();
-				SmsSendResponse response = (SmsSendResponse) JSON.parse(sb.toString());
+				SmsSendResponse response = JSONObject.toJavaObject((JSON) JSON.parse(sb.toString()),SmsSendResponse.class);
 				if (!Integer.valueOf(0).equals(response.getCode())){
 					logger.info("send short messge error :" + response.getErrorMsg());
 				}

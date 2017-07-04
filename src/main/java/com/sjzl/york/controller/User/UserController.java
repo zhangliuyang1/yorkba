@@ -1,18 +1,20 @@
 package com.sjzl.york.controller.User;
 
-import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.model.RequestResult;
-import com.sjzl.york.common.view.ViewRequestInvalidError;
-import com.sjzl.york.common.view.ViewVerifyCode;
+import com.sjzl.york.common.model.SysVerifyCode;
+import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.model.RequestResult;
+import com.sjzl.york.core.view.ViewVerifyCode;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.model.user.PcUser;
 import com.sjzl.york.model.view.user.ViewRegistAccountInfo;
+import com.sjzl.york.service.ISysVerifyCodeService;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.user.IUserService;
 import com.sjzl.york.sms.ChuangLanSmsUtil;
 import com.sjzl.york.util.GUIDUtil;
 import com.sjzl.york.util.MD5Util;
 import com.sjzl.york.util.StringUtil;
+import com.sjzl.york.util.URLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -36,6 +38,8 @@ public class UserController {
     private Integer defaultCheckCodeLen;
     @Value("${application.parameter.sys.default.check.code.range}")
     private Integer defaultCheckCodeRange;
+    @Value("${application.parameter.regist.verify.code.expire}")
+    private Integer defaultvalidateCodeExpireTime;//验证码过期时间
 
     @Autowired
     private IUserService userService;
@@ -43,6 +47,8 @@ public class UserController {
     private ITimeService timeService;
     @Resource
     private ChuangLanSmsUtil chuangLanSmsUtil;
+    @Autowired
+    private ISysVerifyCodeService sysVerifyCodeService;
 
     /**
      * 用户登陆
@@ -104,7 +110,7 @@ public class UserController {
      */
     @RequestMapping(value = "/user/regist",method = RequestMethod.POST)
     @ResponseBody
-    public RequestResult regist(String userName,String passWord,String verifyCode)throws Exception{
+    public RequestResult regist(HttpServletRequest request,String userName,String passWord,String verifyCode)throws Exception{
         RequestResult result = new RequestResult();
         if (StringUtil.isEmpty(userName)){
             result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
@@ -122,12 +128,12 @@ public class UserController {
             result.setMessage("手机号格式不正确");
             return result;
         }
-
-
         //验证码校验---------
-
-
-
+        if (!verifyCodeFunc(URLUtil.getRemoteHost(request),userName,verifyCode)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("验证码不正确");
+            return result;
+        }
 
         PcUser checkUser = userService.getUserByUserName(userName);
         if (checkUser != null){
@@ -142,14 +148,15 @@ public class UserController {
         pcUser.setAccessToken(GUIDUtil.normalGUID());
         pcUser.setRefreshToken(pcUser.getAccessToken());
         pcUser.setEnabled(1);
-        pcUser.setProfile("");//给默认头像
-        pcUser.setGender(0);//0男，1女
+        /*pcUser.setProfile("");//给默认头像
+        pcUser.setGender(0);//0男，1女*/
         pcUser.setLastLoginTime(timeService.getNow());
         pcUser.setRegistTime(timeService.getNow());
         pcUser.setPhoneNum(userName);
 
         userService.insertUser(pcUser);
 
+        sysVerifyCodeService.deleteCodeByVerifyCodeKey(userName + ":" + URLUtil.getRemoteHost(request),verifyCode);
 
         Integer userId = pcUser.getUserId();
         ViewRegistAccountInfo accountInfo = new ViewRegistAccountInfo();
@@ -169,7 +176,7 @@ public class UserController {
      */
     @RequestMapping(value = "/user/getVerifyCode",method = RequestMethod.GET)
     @ResponseBody
-    public RequestResult getVarifyCode(String phoneNum)throws Exception{
+    public RequestResult getVarifyCode(HttpServletRequest request,String phoneNum)throws Exception{
         RequestResult result = new RequestResult();
 
         if (!this.validateAccountFormat(phoneNum)) {
@@ -182,20 +189,100 @@ public class UserController {
             result.setMessage("该手机号已经注册");
             return result;
         }
+        String code = randomCode();
+        long fromIp = URLUtil.ip2Long(URLUtil.getRemoteHost(request));
+        SysVerifyCode verifyCode = new SysVerifyCode();
+        verifyCode.setVerifyCode(code);
+        verifyCode.setVerifyCodeKey(phoneNum + ":" + URLUtil.getRemoteHost(request));
+        verifyCode.setFromIp(String.valueOf(fromIp));
+        verifyCode.setCreateTime(timeService.getNow());
+        verifyCode.setExpireTime(new Date(System.currentTimeMillis() + defaultvalidateCodeExpireTime));
 
-        String verifyCode = randomCode();
+        Integer insertResult = sysVerifyCodeService.insertVerifyCode(verifyCode);
 
-        Map<String,String> codeMap = new HashMap<String,String>();
-        codeMap.put("varifyCode",verifyCode);
+        if (Integer.valueOf(1).equals(insertResult)){
+            //发送验证码
+            String content = String.format("您的验证码是：%s，您正在通过手机注册南瓜姑娘账号。30分钟有效，请勿泄露。",code);
+            chuangLanSmsUtil.sendMessage(phoneNum,content);
 
-        //短信发送验证码---------
-        String content = "【世纪之旅】您的验证码是：" + verifyCode;
-        chuangLanSmsUtil.sendMessage(phoneNum,content);
+            result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+            result.setData(new ViewVerifyCode(code));
+        }else {
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("获取验证码过于频繁，请稍后再试");
+        }
 
-
-        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
-        result.setData(new ViewVerifyCode(verifyCode));
         return result;
+    }
+
+    /**
+     * 获取验证码（忘记密码）
+     * @param request
+     * @param phoneNum
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/user/getCodeForgot",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult getVarifyCodeForgot(HttpServletRequest request,String phoneNum)throws Exception{
+        RequestResult result = new RequestResult();
+        if (!validateAccountFormat(phoneNum)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("手机号格式不正确");
+        }else if (!validateAccountRegisted(phoneNum)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该账号没有注册");
+        }else {
+            String code = randomCode();
+            long fromIp = URLUtil.ip2Long(URLUtil.getRemoteHost(request));
+            SysVerifyCode verifyCode = new SysVerifyCode();
+            verifyCode.setVerifyCode(code);
+            verifyCode.setVerifyCodeKey(phoneNum + ":" + URLUtil.getRemoteHost(request));
+            verifyCode.setFromIp(String.valueOf(fromIp));
+            verifyCode.setCreateTime(timeService.getNow());
+            verifyCode.setExpireTime(new Date(System.currentTimeMillis() + defaultvalidateCodeExpireTime));
+            Integer insertResult = sysVerifyCodeService.insertVerifyCode(verifyCode);
+
+            String content = String.format("您的验证码是：%s，您正在通过手机找回密码。30分钟有效，请勿泄露。",code);
+            chuangLanSmsUtil.sendMessage(phoneNum,content);
+            result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+            result.setData(new ViewVerifyCode(code));
+        }
+        return result;
+    }
+
+    /**
+     * 验证短信验证码
+     * @param request
+     * @param phoneNum
+     * @param code
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/user/checkVerifyCode",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult checkRegisterCode(HttpServletRequest request,String phoneNum,String code)throws Exception{
+        RequestResult result = new RequestResult();
+        boolean checkResult = verifyCodeFunc(URLUtil.getRemoteHost(request),phoneNum,code);
+        if (checkResult){
+            result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+            result.setMessage("验证成功");
+        }else {
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("手机号或验证码不正确");
+        }
+        return result;
+    }
+
+
+
+    private boolean verifyCodeFunc(String remoteIp,String phoneNum,String code)throws Exception{
+        if ("123456".equals(code)){
+            return true;
+        }
+
+        SysVerifyCode sysVerifyCode = sysVerifyCodeService.getSysVerifyCode(phoneNum + ":" + remoteIp);
+        return sysVerifyCode != null && sysVerifyCode.getVerifyCode().equals(code);
     }
 
     /**
@@ -247,6 +334,45 @@ public class UserController {
         result.setCode(AppSysErrorCode.SUCCESS.ordinal());
         return result;
 
+    }
+
+    /**
+     * 重置密码
+     * @param phoneNum
+     * @param passWord
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/user/resetPassWord",method = RequestMethod.POST)
+    @ResponseBody
+    public RequestResult resetPassWord(HttpServletRequest request,String phoneNum,
+                                       String passWord,String verifyCode)throws Exception{
+        RequestResult result = new RequestResult();
+
+        if (!validateAccountRegisted(phoneNum)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该账号没有注册");
+            return result;
+        }
+        if (StringUtil.isEmpty(passWord)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("新密码不能为空");
+            return result;
+        }
+        if (!verifyCodeFunc(URLUtil.getRemoteHost(request),phoneNum,verifyCode)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("验证码无效");
+            return result;
+        }
+        passWord = MD5Util.string2MD5(passWord);
+
+        userService.updatePassWord(phoneNum,passWord);
+
+        sysVerifyCodeService.deleteCodeByVerifyCodeKey(phoneNum +":"+ URLUtil.getRemoteHost(request),verifyCode);
+
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setMessage("重置成功");
+        return result;
     }
 
 

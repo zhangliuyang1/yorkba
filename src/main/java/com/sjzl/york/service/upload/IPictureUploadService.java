@@ -1,6 +1,6 @@
 package com.sjzl.york.service.upload;
 
-import com.sjzl.york.common.model.PictureUploadResult;
+import com.sjzl.york.core.model.PictureUploadResult;
 
 import java.io.File;
 import java.io.IOException;

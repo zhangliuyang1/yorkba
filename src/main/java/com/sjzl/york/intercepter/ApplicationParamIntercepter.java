@@ -1,12 +1,10 @@
 package com.sjzl.york.intercepter;
 
 import com.alibaba.fastjson.JSON;
-import com.sjzl.york.common.model.AppSysErrorCode;
-import com.sjzl.york.common.model.RequestResult;
-import com.sjzl.york.common.view.ViewRequestInvalidError;
+import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.service.IParameterCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
