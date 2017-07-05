@@ -86,6 +86,7 @@ public class PictureUploadController {
                     } catch (IOException e) {
 
                     }
+                    file.delete();
                 }
             }
         }
