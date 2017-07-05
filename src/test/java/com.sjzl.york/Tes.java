@@ -1,3 +1,5 @@
+package com.sjzl.york;
+
 import com.sjzl.york.sms.ChuangLanSmsUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +23,7 @@ public class Tes {
     @Test
     public void sendMessage()throws Exception{
         String phoneNum = "18516993208";
-        String content = "测试验证码";
+        String content = "请找是个dsb";
 
         chuangLanSmsUtil.sendMessage(phoneNum,content);
     }
