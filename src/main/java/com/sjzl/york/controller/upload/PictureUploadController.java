@@ -6,6 +6,7 @@ import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.upload.IPictureUploadService;
 import com.sjzl.york.util.ExceptionPrintUtil;
+import com.sjzl.york.util.GUIDUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,7 @@ public class PictureUploadController {
         RequestResult result = new RequestResult();
 
         String path = request.getSession().getServletContext().getRealPath("/");
-        long timestamp = timeService.getNow().getTime();
+        String guid = GUIDUtil.normalGUID();
 
         Iterator<String> it = request.getFileNames();
         if (it != null && it.hasNext()) {
@@ -62,7 +63,7 @@ public class PictureUploadController {
                     return result;
                 }
 
-                File file = new File(path+timestamp);
+                File file = new File(path + guid);
 
                 InputStream inputStream = null;
                 try {
