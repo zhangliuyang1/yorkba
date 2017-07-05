@@ -10,7 +10,7 @@ import com.sjzl.york.model.view.user.ViewRegistAccountInfo;
 import com.sjzl.york.service.ISysVerifyCodeService;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.user.IUserService;
-import com.sjzl.york.sms.ChuangLanSmsUtil;
+import com.sjzl.york.core.sms.ChuangLanSmsUtil;
 import com.sjzl.york.util.GUIDUtil;
 import com.sjzl.york.util.MD5Util;
 import com.sjzl.york.util.StringUtil;

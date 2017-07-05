@@ -14,6 +14,11 @@ public class ProjectItem {
     private String title;
 
     /**
+     * 客户id
+     */
+    private Integer customerId;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -24,12 +29,7 @@ public class ProjectItem {
     private Date updateTime;
 
     /**
-     * 是否完成：0未完成，1已完成
-     */
-    private Integer isComplete;
-
-    /**
-     * 状态：0创建，1施工中，2已完成
+     * 状态：0创建未施工，1施工中，2已完成
      */
     private Integer status;
 
@@ -37,6 +37,11 @@ public class ProjectItem {
      * 创建人
      */
     private Integer createUserId;
+
+    /**
+     * 开始施工时间
+     */
+    private Date startTime;
 
     public Integer getId() {
         return id;
@@ -52,6 +57,14 @@ public class ProjectItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
     public Date getCreateTime() {
@@ -70,14 +83,6 @@ public class ProjectItem {
         this.updateTime = updateTime;
     }
 
-    public Integer getIsComplete() {
-        return isComplete;
-    }
-
-    public void setIsComplete(Integer isComplete) {
-        this.isComplete = isComplete;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -92,5 +97,13 @@ public class ProjectItem {
 
     public void setCreateUserId(Integer createUserId) {
         this.createUserId = createUserId;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 }

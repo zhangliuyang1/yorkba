@@ -1,4 +1,4 @@
-package com.sjzl.york.sms;
+package com.sjzl.york.core.sms;
 /**
  * 
  * @author tianyh 

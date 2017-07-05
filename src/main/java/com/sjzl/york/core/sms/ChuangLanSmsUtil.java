@@ -1,4 +1,4 @@
-package com.sjzl.york.sms;
+package com.sjzl.york.core.sms;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

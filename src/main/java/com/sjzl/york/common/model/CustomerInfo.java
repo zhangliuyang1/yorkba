@@ -9,11 +9,6 @@ public class CustomerInfo {
     private Integer id;
 
     /**
-     * 项目编号
-     */
-    private Integer projectId;
-
-    /**
      * 客户姓名
      */
     private String custName;
@@ -54,14 +49,6 @@ public class CustomerInfo {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
     }
 
     public String getCustName() {
