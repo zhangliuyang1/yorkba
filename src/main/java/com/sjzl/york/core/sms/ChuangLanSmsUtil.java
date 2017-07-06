@@ -86,6 +86,8 @@ public class ChuangLanSmsUtil {
 				SmsSendResponse response = JSONObject.toJavaObject((JSON) JSON.parse(sb.toString()),SmsSendResponse.class);
 				if (!String.valueOf(0).equals(response.getCode())){
 					logger.info("send short messge error :" + response.getErrorMsg());
+				}else {
+					logger.info("短信发送成功:" + content);
 				}
 			}
 
