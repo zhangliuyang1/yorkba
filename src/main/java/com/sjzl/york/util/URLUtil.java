@@ -12,6 +12,12 @@ public class URLUtil {
 
     public static String getRemoteHost(javax.servlet.http.HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
+        if (!StringUtil.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip)){
+            String[] ipArray = ip.split(",");
+            if (ipArray != null && ip.length() > 1){
+                ip = ipArray[0];
+            }
+        }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }

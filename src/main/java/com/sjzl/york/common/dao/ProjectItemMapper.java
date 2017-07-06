@@ -2,6 +2,8 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectItem;
 
+import java.util.List;
+
 public interface ProjectItemMapper {
     /**
      *
@@ -44,4 +46,6 @@ public interface ProjectItemMapper {
      * @return
      */
     int updateByPrimaryKey(ProjectItem record);
+
+    List<ProjectItem> getProjectListByUserId(Integer userId);
 }
