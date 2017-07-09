@@ -2,6 +2,8 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectStateImg;
 
+import java.util.List;
+
 public interface ProjectStateImgMapper {
     /**
      *
@@ -16,6 +18,10 @@ public interface ProjectStateImgMapper {
      * @return
      */
     int insert(ProjectStateImg record);
+
+    void insertBatch(List<ProjectStateImg> list);
+
+    void deleteByProjectId(Integer projectId);
 
     /**
      *

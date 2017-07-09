@@ -1,6 +1,7 @@
 package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectItem;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public interface ProjectItemMapper {
      * @return
      */
     int insertSelective(ProjectItem record);
+
+    void addCustomer(@Param("projectId") Integer projectId,@Param("customerId") Integer customerId);
 
     /**
      *

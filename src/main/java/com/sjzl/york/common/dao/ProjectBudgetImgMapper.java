@@ -2,6 +2,8 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectBudgetImg;
 
+import java.util.List;
+
 public interface ProjectBudgetImgMapper {
     /**
      *
@@ -16,6 +18,10 @@ public interface ProjectBudgetImgMapper {
      * @return
      */
     int insert(ProjectBudgetImg record);
+
+    void insertBatch(List<ProjectBudgetImg> list);
+
+    void deleteByProjectId(Integer projectId);
 
     /**
      *

@@ -32,7 +32,8 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
       #{createUserId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.sjzl.york.common.model.ProjectItem" >
+  <insert id="insertSelective" parameterType="com.sjzl.york.common.model.ProjectItem"
+          useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into project_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,6 +88,9 @@
       </if>
     </trim>
   </insert>
+  <update id="addCustomer">
+    update project_item set customer_id = #{customerId} where id = #{projectId}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.sjzl.york.common.model.ProjectItem" >
     update project_item
     <set >

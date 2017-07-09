@@ -27,6 +27,17 @@
     values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, 
       #{width,jdbcType=INTEGER}, #{height,jdbcType=INTEGER})
   </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into project_cad_img (id, project_id, img_url,
+    width, height)
+    VALUES
+    <foreach collection="list" index="index" item="item" separator=",">
+      (#{item.projectId},#{item.imgUrl},#{item.width},#{item.height})
+    </foreach>
+  </insert>
+  <delete id="deleteByProjectId" parameterType="java.lang.Integer">
+    delete from project_cad_img where project_id = #{projectId}
+  </delete>
   <insert id="insertSelective" parameterType="com.sjzl.york.common.model.ProjectCadImg" >
     insert into project_cad_img
     <trim prefix="(" suffix=")" suffixOverrides="," >

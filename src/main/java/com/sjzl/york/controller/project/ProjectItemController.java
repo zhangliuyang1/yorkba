@@ -11,6 +11,7 @@ import com.sjzl.york.core.model.AppSysErrorCode;
 import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.service.project.IProjectItemService;
 import com.sjzl.york.util.StringUtil;
+import org.eclipse.jetty.deploy.App;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,13 +80,19 @@ public class ProjectItemController {
             result.setMessage("请输入方案标题");
             return result;
         }
+        List<ProjectBudgetImg> budgetImgList = getBudgetImgListFromJson(budgetImgs, projectId);
+        List<ProjectCadImg> cadImgList = getCadImgListFromJson(cadImgs, projectId);
+        List<ProjectStateImg>stateImgList = getStateImgListFromJson(stateImgs, projectId);
 
+        projectItemService.addOrUpdateProject(UserContext.getUser().getUserId(),projectId,title,
+                budgetImgList,cadImgList,stateImgList);
 
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
         return result;
     }
 
 
-    private List<ProjectBudgetImg> getBudgetImgListFromJson(String budgetImgs)throws Exception{
+    private List<ProjectBudgetImg> getBudgetImgListFromJson(String budgetImgs,Integer projectId)throws Exception{
         List<ProjectBudgetImg> list = new ArrayList<>();
         if (StringUtil.isEmpty(budgetImgs)){
             return list;
@@ -98,6 +105,7 @@ public class ProjectItemController {
                 img.setImgUrl(jsonObject.getString("imgUrl"));
                 img.setWidth(jsonObject.getInteger("width"));
                 img.setHeight(jsonObject.getInteger("height"));
+                img.setProjectId(projectId);
                 list.add(img);
             }
 
@@ -105,7 +113,7 @@ public class ProjectItemController {
         return list;
     }
 
-    private List<ProjectCadImg> getCadImgListFromJson(String cadImgs)throws Exception{
+    private List<ProjectCadImg> getCadImgListFromJson(String cadImgs,Integer projectId)throws Exception{
         List<ProjectCadImg> list = new ArrayList<>();
         if (StringUtil.isEmpty(cadImgs)){
             return list;
@@ -118,6 +126,7 @@ public class ProjectItemController {
                 img.setImgUrl(jsonObject.getString("imgUrl"));
                 img.setWidth(jsonObject.getInteger("width"));
                 img.setHeight(jsonObject.getInteger("height"));
+                img.setProjectId(projectId);
                 list.add(img);
             }
 
@@ -125,7 +134,7 @@ public class ProjectItemController {
         return list;
     }
 
-    private List<ProjectStateImg> getStateImgListFromJson(String stateImgs)throws Exception{
+    private List<ProjectStateImg> getStateImgListFromJson(String stateImgs,Integer projectId)throws Exception{
         List<ProjectStateImg> list = new ArrayList<>();
         if (StringUtil.isEmpty(stateImgs)){
             return list;
@@ -138,6 +147,7 @@ public class ProjectItemController {
                 img.setImgUrl(jsonObject.getString("imgUrl"));
                 img.setWidth(jsonObject.getInteger("width"));
                 img.setHeight(jsonObject.getInteger("height"));
+                img.setProjectId(projectId);
                 list.add(img);
             }
 
@@ -145,4 +155,102 @@ public class ProjectItemController {
         return list;
     }
 
+    @RequestMapping(value = "/project/addOrUpadteCustomerInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public  RequestResult addOrUpadteCustomerInfo(String acessToken,Integer customerId,Integer projectId,
+                                                  String custName,String phoneNum,String address)throws Exception{
+        RequestResult result = new RequestResult();
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+
+        if (StringUtil.isEmpty(custName)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入客户姓名");
+            return result;
+        }
+        if (StringUtil.isEmpty(phoneNum)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入手机号");
+            return result;
+        }
+        if (StringUtil.isEmpty(address)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入地址");
+            return result;
+        }
+
+        projectItemService.addOrUpadteCustomerInfo(customerId, projectId, custName, phoneNum, address);
+
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+
+        return result;
+    }
+
+
+    @RequestMapping(value = "/project/getProjectDetail",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult getProjectDetail(String accessToken,Integer projectId)throws Exception{
+        RequestResult result = new RequestResult();
+
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (projectId == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("projectId不能为空");
+            return result;
+        }
+
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(projectItemService.getProjectDetail(UserContext.getUser().getUserId(),projectId));
+
+        return result;
+    }
+
+    @RequestMapping(value = "/project/getCustomerInfo",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult getCustomerInfo(String accessToken,Integer customerId)throws Exception{
+        RequestResult result = new RequestResult();
+
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (customerId == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("customerId不能为空");
+            return result;
+        }
+
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        result.setData(projectItemService.getCustomerInfo(customerId));
+        return result;
+    }
+
+    @RequestMapping(value = "/project/startProject",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult startProject(String accessToken,Integer projectId)throws Exception{
+        RequestResult result = new RequestResult();
+
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (projectId == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("projectId不能为空");
+            return result;
+        }
+
+        projectItemService.startProject(projectId);
+        result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        return result;
+    }
 }
