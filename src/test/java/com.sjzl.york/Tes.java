@@ -21,11 +21,11 @@ public class Tes {
     @Resource
     private ChuangLanSmsUtil chuangLanSmsUtil;
 
-    @Test
+    /*@Test
     public void sendMessage()throws Exception{
         String phoneNum = "18516993208";
         String content = "请找是个dsb";
 
         chuangLanSmsUtil.sendMessage(phoneNum,content);
-    }
+    }*/
 }

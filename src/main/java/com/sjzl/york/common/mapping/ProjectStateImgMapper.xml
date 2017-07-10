@@ -38,6 +38,12 @@
   <delete id="deleteByProjectId" parameterType="java.lang.Integer">
     delete from project_state_img where project_id = #{projectId}
   </delete>
+  <select id="getImgListByProjectId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_state_img
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
   <insert id="insertSelective" parameterType="com.sjzl.york.common.model.ProjectStateImg" >
     insert into project_state_img
     <trim prefix="(" suffix=")" suffixOverrides="," >

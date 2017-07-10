@@ -2,6 +2,8 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectSchedule;
 
+import java.util.List;
+
 public interface ProjectScheduleMapper {
     /**
      *
@@ -30,6 +32,8 @@ public interface ProjectScheduleMapper {
      * @return
      */
     ProjectSchedule selectByPrimaryKey(Integer id);
+
+    List<ProjectSchedule> selectByProjectId(Integer projectId);
 
     /**
      *

@@ -9,7 +9,7 @@ public class ScheduleState {
     /**
      * 编号
      */
-    private Integer code;
+    private Integer scheduleCode;
 
     /**
      * 进度描述
@@ -24,12 +24,12 @@ public class ScheduleState {
         this.id = id;
     }
 
-    public Integer getCode() {
-        return code;
+    public Integer getScheduleCode() {
+        return scheduleCode;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setScheduleCode(Integer scheduleCode) {
+        this.scheduleCode = scheduleCode;
     }
 
     public String getStepDesc() {

@@ -3,11 +3,11 @@
 <mapper namespace="com.sjzl.york.common.dao.ScheduleStateMapper" >
   <resultMap id="BaseResultMap" type="com.sjzl.york.common.model.ScheduleState" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="code" property="code" jdbcType="INTEGER" />
+    <result column="schedule_code" property="scheduleCode" jdbcType="INTEGER" />
     <result column="step_desc" property="stepDesc" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, step_desc
+    id, schedule_code, step_desc
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,9 +20,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.sjzl.york.common.model.ScheduleState" >
-    insert into schedule_state (id, code, step_desc
+    insert into schedule_state (id, schedule_code, step_desc
       )
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=INTEGER}, #{stepDesc,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{scheduleCode,jdbcType=INTEGER}, #{stepDesc,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sjzl.york.common.model.ScheduleState" >
@@ -31,8 +31,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="code != null" >
-        code,
+      <if test="scheduleCode != null" >
+        schedule_code,
       </if>
       <if test="stepDesc != null" >
         step_desc,
@@ -42,19 +42,25 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="code != null" >
-        #{code,jdbcType=INTEGER},
+      <if test="scheduleCode != null" >
+        #{scheduleCode,jdbcType=INTEGER},
       </if>
       <if test="stepDesc != null" >
         #{stepDesc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
+
+  <select id="getScheduleStateList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from schedule_state
+  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.sjzl.york.common.model.ScheduleState" >
     update schedule_state
     <set >
-      <if test="code != null" >
-        code = #{code,jdbcType=INTEGER},
+      <if test="scheduleCode != null" >
+        schedule_code = #{scheduleCode,jdbcType=INTEGER},
       </if>
       <if test="stepDesc != null" >
         step_desc = #{stepDesc,jdbcType=VARCHAR},
@@ -64,7 +70,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sjzl.york.common.model.ScheduleState" >
     update schedule_state
-    set code = #{code,jdbcType=INTEGER},
+    set schedule_code = #{scheduleCode,jdbcType=INTEGER},
       step_desc = #{stepDesc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

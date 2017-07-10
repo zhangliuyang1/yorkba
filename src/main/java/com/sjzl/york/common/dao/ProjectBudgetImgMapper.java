@@ -23,6 +23,8 @@ public interface ProjectBudgetImgMapper {
 
     void deleteByProjectId(Integer projectId);
 
+    List<ProjectBudgetImg> getImgListByProjectId(Integer projectId);
+
     /**
      *
      * @param

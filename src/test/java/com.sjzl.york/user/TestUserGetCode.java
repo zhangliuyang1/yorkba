@@ -24,10 +24,10 @@ public class TestUserGetCode {
     @Autowired
     private ChuangLanSmsUtil chuangLanSmsUtil;
 
-    @Test
+    /*@Test
     public void sendMessage()throws Exception{
         String phone = "18516993208";
         String content = "您的快递已到楼下，请下来取下";
         chuangLanSmsUtil.sendMessage(phone,content);
-    }
+    }*/
 }

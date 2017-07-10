@@ -31,6 +31,10 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     private ProjectStateImgMapper projectStateImgMapper;
     @Resource
     private CustomerInfoMapper customerInfoMapper;
+    @Resource
+    private ProjectScheduleMapper projectScheduleMapper;
+    @Resource
+    private ScheduleStateMapper scheduleStateMapper;
 
     @Override
     public List<ProjectItem> getProjectList(Integer userId) throws Exception {
@@ -42,11 +46,10 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         ProjectItem projectItem = new ProjectItem();
         projectItem.setId(projectId);
         projectItem.setTitle(title);
-        projectItem.setCreateTime(timeService.getNow());
-        projectItem.setStatus(0);
-        projectItem.setCreateUserId(useId);
-
         if (projectId == null){//新增
+            projectItem.setCreateTime(timeService.getNow());
+            projectItem.setStatus(0);
+            projectItem.setCreateUserId(useId);
             projectItemMapper.insertSelective(projectItem);
             if (!budgetImgs.isEmpty()){
                 for (ProjectBudgetImg img: budgetImgs) {
@@ -70,8 +73,6 @@ public class ProjectItemServiceImpl implements IProjectItemService {
 
             }
         }else {//编辑
-            projectItem.setStatus(null);
-            projectItem.setCreateTime(null);
             projectItem.setUpdateTime(timeService.getNow());
             projectItemMapper.updateByPrimaryKeySelective(projectItem);
 
@@ -108,7 +109,16 @@ public class ProjectItemServiceImpl implements IProjectItemService {
 
     @Override
     public ViewProjectDetail getProjectDetail(Integer userId, Integer projectId) throws Exception {
-        return null;
+        ViewProjectDetail detail = new ViewProjectDetail();
+        ProjectItem item = projectItemMapper.selectByPrimaryKey(projectId);
+        detail.setId(projectId);
+        detail.setTitle(item.getTitle());
+        detail.setStatus(item.getStatus());
+        detail.setCustomerId(item.getCustomerId());
+        detail.setBudgetImgList(projectBudgetImgMapper.getImgListByProjectId(projectId));
+        detail.setCadImgList(projectCadImgMapper.getImgListByProjectId(projectId));
+        detail.setStateImgList(projectStateImgMapper.getImgListByProjectId(projectId));
+        return detail;
     }
 
     @Override
@@ -123,5 +133,26 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         projectItem.setStartTime(timeService.getNow());
         projectItem.setStatus(1);
         projectItemMapper.updateByPrimaryKeySelective(projectItem);
+    }
+
+    @Override
+    public void updateProjectSchedule(Integer projectId, Integer code, String stepDesc) throws Exception {
+        ProjectSchedule schedule = new ProjectSchedule();
+        schedule.setProjectId(projectId);
+        schedule.setScheduleCode(code);
+        schedule.setStepDesc(stepDesc);
+        schedule.setCreateTime(timeService.getNow());
+        projectScheduleMapper.insertSelective(schedule);
+    }
+
+    @Override
+    public List<ProjectSchedule> getProjectSchedule(Integer projectId) throws Exception {
+
+        return projectScheduleMapper.selectByProjectId(projectId);
+    }
+
+    @Override
+    public List<ScheduleState> getSysALLSchedule() throws Exception {
+        return scheduleStateMapper.getScheduleStateList();
     }
 }

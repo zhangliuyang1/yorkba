@@ -82,6 +82,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByProjectId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_schedule
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.sjzl.york.common.model.ProjectSchedule" >
     update project_schedule
     set project_id = #{projectId,jdbcType=INTEGER},

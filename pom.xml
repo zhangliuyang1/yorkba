@@ -252,8 +252,8 @@
 
     <!-- SYSTEM -->
     <dependency>
-      <groupId>com.baidu</groupId>
-      <artifactId>baiduyun</artifactId>
+      <groupId>com.baidu.yun</groupId>
+      <artifactId>bccs-api</artifactId>
       <version>3.0.1</version>
       <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/bccs-api-3.0.1.jar</systemPath>
       <scope>system</scope>
@@ -265,6 +265,16 @@
       <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/wxpay-scanpay-java-sdk-1.0.1.jar</systemPath>
       <scope>system</scope>
     </dependency>
+    <dependency>
+      <groupId>net.sf.javavp8decoder</groupId>
+      <artifactId>WebPViewer</artifactId>
+      <version>0.2</version>
+      <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/WebPViewer-0.2.jar</systemPath>
+      <scope>system</scope>
+    </dependency>
+
+
+
 
     <dependency>
       <groupId>org.jsoup</groupId>
@@ -335,13 +345,7 @@
       <version>1.4.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.java.V8</groupId>
-      <artifactId>V8decoder</artifactId>
-      <version>0.2.0</version>
-      <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/WebPViewer-0.2.jar</systemPath>
-      <scope>system</scope>
-    </dependency>
+
 
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -517,6 +521,21 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.4</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <forkMode>once</forkMode>
+          <argLine>-Dfile.encoding=UTF-8</argLine>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
     </plugins>

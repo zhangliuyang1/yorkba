@@ -95,6 +95,8 @@
                 <value>/user/getCodeForgot</value>
                 <value>/user/checkVerifyCode</value>
                 <value>/user/resetPassWord</value>
+                <value>/picture/upload</value>
+                <value>/project/getSysALLSchedule</value>
             </list>
         </property>
 
@@ -108,7 +110,9 @@
 
     <bean id="applicationParamIntercepter" class="com.sjzl.york.intercepter.ApplicationParamIntercepter">
         <property name="urlExceptions">
-            <list></list>
+            <list>
+                <value>/picture/upload</value>
+            </list>
         </property>
 
 

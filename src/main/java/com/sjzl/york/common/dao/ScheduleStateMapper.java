@@ -2,6 +2,8 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ScheduleState;
 
+import java.util.List;
+
 public interface ScheduleStateMapper {
     /**
      *
@@ -30,6 +32,8 @@ public interface ScheduleStateMapper {
      * @return
      */
     ScheduleState selectByPrimaryKey(Integer id);
+
+    List<ScheduleState> getScheduleStateList();
 
     /**
      *

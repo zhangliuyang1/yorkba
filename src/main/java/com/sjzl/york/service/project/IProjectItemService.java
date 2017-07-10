@@ -26,4 +26,10 @@ public interface IProjectItemService {
     CustomerInfo getCustomerInfo(Integer customerId)throws Exception;
 
     void startProject(Integer projectId)throws Exception;
+
+    void updateProjectSchedule(Integer projectId,Integer code,String stepDesc)throws Exception;
+
+    List<ProjectSchedule> getProjectSchedule(Integer projectId)throws Exception;
+
+    List<ScheduleState> getSysALLSchedule()throws Exception;
 }

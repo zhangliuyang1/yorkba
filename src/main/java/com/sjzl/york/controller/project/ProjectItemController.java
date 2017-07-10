@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sjzl.york.common.model.ProjectBudgetImg;
 import com.sjzl.york.common.model.ProjectCadImg;
+import com.sjzl.york.common.model.ProjectSchedule;
 import com.sjzl.york.common.model.ProjectStateImg;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.core.model.AppSysErrorCode;
@@ -155,6 +156,17 @@ public class ProjectItemController {
         return list;
     }
 
+    /**
+     * 新增或修改客户信息
+     * @param acessToken
+     * @param customerId
+     * @param projectId
+     * @param custName
+     * @param phoneNum
+     * @param address
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/project/addOrUpadteCustomerInfo",method = RequestMethod.POST)
     @ResponseBody
     public  RequestResult addOrUpadteCustomerInfo(String acessToken,Integer customerId,Integer projectId,
@@ -190,6 +202,13 @@ public class ProjectItemController {
     }
 
 
+    /**
+     * 获取工单详情
+     * @param accessToken
+     * @param projectId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/project/getProjectDetail",method = RequestMethod.GET)
     @ResponseBody
     public RequestResult getProjectDetail(String accessToken,Integer projectId)throws Exception{
@@ -212,6 +231,13 @@ public class ProjectItemController {
         return result;
     }
 
+    /**
+     * 获取客户信息
+     * @param accessToken
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/project/getCustomerInfo",method = RequestMethod.GET)
     @ResponseBody
     public RequestResult getCustomerInfo(String accessToken,Integer customerId)throws Exception{
@@ -233,6 +259,13 @@ public class ProjectItemController {
         return result;
     }
 
+    /**
+     * 开始施工
+     * @param accessToken
+     * @param projectId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/project/startProject",method = RequestMethod.GET)
     @ResponseBody
     public RequestResult startProject(String accessToken,Integer projectId)throws Exception{
@@ -251,6 +284,102 @@ public class ProjectItemController {
 
         projectItemService.startProject(projectId);
         result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+        return result;
+    }
+
+
+    /**
+     * 更新项目进度
+     * @param accessToken
+     * @param projectId
+     * @param code
+     * @param stepDesc
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/project/updateProjectSchedule",method = RequestMethod.POST)
+    @ResponseBody
+    public RequestResult updateProjectSchedule(String accessToken,Integer projectId,Integer code,String stepDesc)throws Exception{
+        RequestResult result = new RequestResult();
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (projectId == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("projectId不能为空");
+            return result;
+        }
+        if (code == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("code不能为空");
+            return result;
+        }
+        if (StringUtil.isEmpty(stepDesc)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("stepDesc不能为空");
+            return result;
+        }
+        List<ProjectSchedule> scheduleList = projectItemService.getProjectSchedule(projectId);
+        if (code != 0 && scheduleList != null && scheduleList.size() < 11){
+            if (code > scheduleList.size() + 1){
+                result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+                result.setMessage("不能跳级完成进度");
+                return result;
+            }
+        }
+
+        projectItemService.updateProjectSchedule(projectId, code, stepDesc);
+        result.setCode(0);
+        return result;
+    }
+
+    /**
+     * 获取工单进度
+     * @param accessToken
+     * @param projectId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/project/getProjectSchedule",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult getProjectSchedule(String accessToken,Integer projectId)throws Exception{
+        RequestResult result = new RequestResult();
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (projectId == null){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("projectId不能为空");
+            return result;
+        }
+
+        result.setCode(0);
+        result.setData(projectItemService.getProjectSchedule(projectId));
+        return result;
+    }
+
+    /**
+     * 获取系统所有进度
+     * @param accessToken
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/project/getSysALLSchedule",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult getSysALLSchedule(String accessToken)throws Exception{
+        RequestResult result = new RequestResult();
+        /*if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }*/
+
+        result.setCode(0);
+        result.setData(projectItemService.getSysALLSchedule());
         return result;
     }
 }
