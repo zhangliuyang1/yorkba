@@ -21,5 +21,7 @@ public interface IUserService {
 
     void updateUserInfo(PcUser pcUser)throws Exception;
 
-    void updatePassWord(String phoneNum,String passWord)throws Exception;
+    void resetPassWord(String phoneNum,String passWord)throws Exception;
+
+    void updatePassWord(Integer userId,String oldPassWord,String newPassWord)throws Exception;
 }

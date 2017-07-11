@@ -3,6 +3,7 @@ package com.sjzl.york.controller.User;
 import com.sjzl.york.common.model.SysVerifyCode;
 import com.sjzl.york.core.model.AppSysErrorCode;
 import com.sjzl.york.core.model.RequestResult;
+import com.sjzl.york.core.model.YorkbaException;
 import com.sjzl.york.core.view.ViewVerifyCode;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.model.user.PcUser;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
@@ -366,12 +368,54 @@ public class UserController {
         }
         passWord = MD5Util.string2MD5(passWord);
 
-        userService.updatePassWord(phoneNum,passWord);
+        userService.resetPassWord(phoneNum,passWord);
 
         sysVerifyCodeService.deleteCodeByVerifyCodeKey(phoneNum +":"+ URLUtil.getRemoteHost(request),verifyCode);
 
         result.setCode(AppSysErrorCode.SUCCESS.ordinal());
         result.setMessage("重置成功");
+        return result;
+    }
+
+    /**
+     * 修改密码
+     * @param accessToken
+     * @param oldPassWord
+     * @param newPassWord
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/user/updatePassWord",method = RequestMethod.POST)
+    @ResponseBody
+    public RequestResult updatePassWord(HttpServletRequest request,String accessToken,
+                                       String oldPassWord,String newPassWord)throws Exception{
+        RequestResult result = new RequestResult();
+
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        if (StringUtil.isEmpty(oldPassWord)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入旧密码");
+            return result;
+        }
+        if (StringUtil.isEmpty(newPassWord)){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("请输入新密码");
+            return result;
+        }
+
+        Integer userId = UserContext.getUser().getUserId();
+        try {
+            userService.updatePassWord(userId,oldPassWord,newPassWord);
+            result.setCode(AppSysErrorCode.SUCCESS.ordinal());
+            result.setMessage("修改成功");
+        }catch (YorkbaException e){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage(e.getMessage());
+        }
         return result;
     }
 
