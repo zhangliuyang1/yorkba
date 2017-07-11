@@ -131,7 +131,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         ProjectItem projectItem = new ProjectItem();
         projectItem.setId(projectId);
         projectItem.setStartTime(timeService.getNow());
-        projectItem.setStatus(1);
+        projectItem.setStatus(1);//开始施工（施工中）
         projectItemMapper.updateByPrimaryKeySelective(projectItem);
     }
 
@@ -143,6 +143,13 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         schedule.setStepDesc(stepDesc);
         schedule.setCreateTime(timeService.getNow());
         projectScheduleMapper.insertSelective(schedule);
+        if (Integer.valueOf(0).equals(code)){//完工
+            //更新工单状态
+            ProjectItem projectItem = new ProjectItem();
+            projectItem.setId(projectId);
+            projectItem.setStatus(2);//完成
+            projectItemMapper.updateByPrimaryKeySelective(projectItem);
+        }
     }
 
     @Override

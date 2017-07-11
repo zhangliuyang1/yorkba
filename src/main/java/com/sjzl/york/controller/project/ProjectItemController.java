@@ -3,10 +3,7 @@ package com.sjzl.york.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sjzl.york.common.model.ProjectBudgetImg;
-import com.sjzl.york.common.model.ProjectCadImg;
-import com.sjzl.york.common.model.ProjectSchedule;
-import com.sjzl.york.common.model.ProjectStateImg;
+import com.sjzl.york.common.model.*;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.core.model.AppSysErrorCode;
 import com.sjzl.york.core.model.RequestResult;
@@ -322,7 +319,8 @@ public class ProjectItemController {
             return result;
         }
         List<ProjectSchedule> scheduleList = projectItemService.getProjectSchedule(projectId);
-        if (code != 0 && scheduleList != null && scheduleList.size() < 11){
+        List<ScheduleState> scheduleStateList = projectItemService.getSysALLSchedule();
+        if (code != 0 && scheduleList != null && scheduleList.size() < scheduleStateList.size() - 1){
             if (code > scheduleList.size() + 1){
                 result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
                 result.setMessage("不能跳级完成进度");
