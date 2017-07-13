@@ -204,7 +204,7 @@ public class UserController {
 
         if (Integer.valueOf(1).equals(insertResult)){
             //发送验证码
-            String content = String.format("您的验证码是：%s，您正在通过手机注册南瓜姑娘账号。30分钟有效，请勿泄露。",code);
+            String content = String.format("您的验证码是：%s，您正在通过手机注册世纪之旅账号。30分钟有效，请勿泄露。",code);
             chuangLanSmsUtil.sendMessage(phoneNum,content);
 
             result.setCode(AppSysErrorCode.SUCCESS.ordinal());
