@@ -277,7 +277,14 @@ public class UserController {
     }
 
 
-
+    /**
+     * 验证码校验
+     * @param remoteIp
+     * @param phoneNum
+     * @param code
+     * @return
+     * @throws Exception
+     */
     private boolean verifyCodeFunc(String remoteIp,String phoneNum,String code)throws Exception{
         if ("123456".equals(code)){
             return true;

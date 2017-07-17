@@ -31,7 +31,7 @@ public class SysVerifyCodeServiceImpl implements ISysVerifyCodeService {
     public SysVerifyCode getSysVerifyCode(String verifyCodeKey) throws Exception {
         List<SysVerifyCode> list = sysVerifyCodeMapper.getVerifyCode(verifyCodeKey);
         if (list != null && !list.isEmpty()){
-            return list.get(0);
+            return list.get(list.size() - 1);
         }else {
             return null;
         }
