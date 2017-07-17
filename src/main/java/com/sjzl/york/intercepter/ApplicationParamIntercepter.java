@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.sjzl.york.core.model.AppSysErrorCode;
 import com.sjzl.york.core.model.RequestResult;
 import com.sjzl.york.service.IParameterCheckService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -22,6 +23,7 @@ import java.util.Map;
  */
 public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
 
+    private final static Logger logger = Logger.getLogger(ApplicationParamIntercepter.class);
 
     @Autowired
     private IParameterCheckService parameterCheckService;
@@ -40,6 +42,8 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
         }
 
         //跳过不需要验证的服务器
+        String localAddr = request.getLocalAddr();
+        logger.info("服务器ip:"+localAddr);
         if (this.hostExceptions.contains(request.getLocalAddr())){
             return true;
         }

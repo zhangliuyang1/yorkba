@@ -112,6 +112,8 @@
         <property name="urlExceptions">
             <list>
                 <value>/picture/upload</value>
+                <value>/user/getVerifyCode.*</value>
+                <value>/user/getCodeForgot</value>
             </list>
         </property>
 
