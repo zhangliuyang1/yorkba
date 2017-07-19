@@ -6,16 +6,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.sjzl.york.common.model.*;
 import com.sjzl.york.context.UserContext;
 import com.sjzl.york.core.model.AppSysErrorCode;
+import com.sjzl.york.core.param.PageParam;
 import com.sjzl.york.core.model.RequestResult;
+import com.sjzl.york.model.param.GetProjectItemListParam;
 import com.sjzl.york.service.project.IProjectItemService;
 import com.sjzl.york.util.StringUtil;
-import org.eclipse.jetty.deploy.App;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,16 +40,19 @@ public class ProjectItemController {
      */
     @RequestMapping(value = "/project/getProjectList",method = RequestMethod.GET)
     @ResponseBody
-    public RequestResult getProjectList(String accessToken)throws Exception{
+    public RequestResult getProjectList(String accessToken,Integer pageNum,Integer pageSize)throws Exception{
         RequestResult result = new RequestResult();
         if (UserContext.getUser() == null){
             result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
             result.setMessage("授权令牌失效，请重新登陆");
             return result;
         }
-
+        GetProjectItemListParam param = new GetProjectItemListParam();
+        param.setUserId(UserContext.getUser().getUserId());
+        param.setPageNum(pageNum);
+        param.setPageSize(pageSize);
         result.setCode(AppSysErrorCode.SUCCESS.ordinal());
-        result.setData(projectItemService.getProjectList(UserContext.getUser().getUserId()));
+        result.setData(projectItemService.getProjectList(param));
         return result;
     }
 

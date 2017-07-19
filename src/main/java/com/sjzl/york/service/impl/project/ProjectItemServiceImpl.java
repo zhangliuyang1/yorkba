@@ -2,6 +2,7 @@ package com.sjzl.york.service.impl.project;
 
 import com.sjzl.york.common.dao.*;
 import com.sjzl.york.common.model.*;
+import com.sjzl.york.model.param.GetProjectItemListParam;
 import com.sjzl.york.model.view.project.ViewProjectDetail;
 import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.project.IProjectItemService;
@@ -37,8 +38,8 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     private ScheduleStateMapper scheduleStateMapper;
 
     @Override
-    public List<ProjectItem> getProjectList(Integer userId) throws Exception {
-        return projectItemMapper.getProjectListByUserId(userId);
+    public List<ProjectItem> getProjectList(GetProjectItemListParam param) throws Exception {
+        return projectItemMapper.getProjectListByUserId(param);
     }
 
     @Override
