@@ -36,6 +36,9 @@ public class ViewProjectDetail {
     }
 
     public Integer getCustomerId() {
+        if (customerId == null){
+            return 0;
+        }
         return customerId;
     }
 
