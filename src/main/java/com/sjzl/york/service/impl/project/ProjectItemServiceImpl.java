@@ -116,6 +116,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         detail.setTitle(item.getTitle());
         detail.setStatus(item.getStatus());
         detail.setCustomerId(item.getCustomerId());
+        detail.setStartTime(item.getStartTime());
         detail.setBudgetImgList(projectBudgetImgMapper.getImgListByProjectId(projectId));
         detail.setCadImgList(projectCadImgMapper.getImgListByProjectId(projectId));
         detail.setStateImgList(projectStateImgMapper.getImgListByProjectId(projectId));
