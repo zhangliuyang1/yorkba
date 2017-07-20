@@ -100,10 +100,13 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         info.setPhoneNum(phoneNum);
         info.setAddress(address);
 
+
         if (customerId == null){
+            info.setCreateTime(timeService.getNow());
             customerInfoMapper.insertSelective(info);
             projectItemMapper.addCustomer(projectId,info.getId());
         }else {
+            info.setUpdateTime(timeService.getNow());
             customerInfoMapper.updateByPrimaryKeySelective(info);
         }
     }
