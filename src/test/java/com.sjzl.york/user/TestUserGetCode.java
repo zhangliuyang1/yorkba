@@ -1,5 +1,6 @@
 package com.sjzl.york.user;
 
+import com.sjzl.york.aop.UserManager;
 import com.sjzl.york.core.sms.ChuangLanSmsUtil;
 import com.sjzl.york.service.user.IUserService;
 import org.junit.Test;
@@ -18,16 +19,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 public class TestUserGetCode {
 
+    /*@Autowired
+    private UserManager userManager;
 
-    @Autowired
+    *//*@Autowired
     private IUserService userService;
     @Autowired
-    private ChuangLanSmsUtil chuangLanSmsUtil;
+    private ChuangLanSmsUtil chuangLanSmsUtil;*//*
 
-    /*@Test
-    public void sendMessage()throws Exception{
-        String phone = "18516993208";
-        String content = "您的快递已到楼下，请下来取下";
-        chuangLanSmsUtil.sendMessage(phone,content);
+    @Test
+    public void sendMessage(){
+
+        try {
+            userManager.findUserById(1);
+        } catch (IllegalArgumentException e) {
+
+        }
+    }
+
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
     }*/
 }
