@@ -1,6 +1,7 @@
 package com.sjzl.york.service.project;
 
 import com.sjzl.york.common.model.*;
+import com.sjzl.york.model.param.GetProjectItemListParam;
 import com.sjzl.york.model.view.project.ViewProjectDetail;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface IProjectItemService {
 
-    List<ProjectItem> getProjectList(Integer userId)throws Exception;
+    List<ProjectItem> getProjectList(GetProjectItemListParam param)throws Exception;
 
     void addOrUpdateProject(Integer useId, Integer projectId, String title,
                             List<ProjectBudgetImg> budgetImgs, List<ProjectCadImg> cadImgs,

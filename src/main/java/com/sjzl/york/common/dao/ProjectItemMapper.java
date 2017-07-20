@@ -1,6 +1,7 @@
 package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.ProjectItem;
+import com.sjzl.york.model.param.GetProjectItemListParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -50,5 +51,5 @@ public interface ProjectItemMapper {
      */
     int updateByPrimaryKey(ProjectItem record);
 
-    List<ProjectItem> getProjectListByUserId(Integer userId);
+    List<ProjectItem> getProjectListByUserId(GetProjectItemListParam param);
 }
