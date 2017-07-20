@@ -13,7 +13,7 @@ import java.io.InputStream;
  */
 public interface IPictureUploadService {
 
-    PictureUploadResult uploadImageIncludeWebp(InputStream inputStream, Long contentLen, File file, String webImageUrl)throws IOException;
+    PictureUploadResult uploadImageIncludeWebp(InputStream inputStream, Long contentLen)throws IOException;
 
 
 }
