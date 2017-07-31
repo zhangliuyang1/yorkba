@@ -385,4 +385,34 @@ public class ProjectItemController {
         result.setData(projectItemService.getSysALLSchedule());
         return result;
     }
+
+    /**
+     * 删除工单
+     * @param accessToken
+     * @param projectId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/project/deleteProject",method = RequestMethod.GET)
+    @ResponseBody
+    public RequestResult deleteProject(String accessToken,Integer projectId)throws Exception{
+
+        RequestResult result = new RequestResult();
+        if (UserContext.getUser() == null){
+            result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
+            result.setMessage("授权令牌失效，请重新登陆");
+            return result;
+        }
+        ProjectItem projectItem = projectItemService.getProjectItem(projectId);
+        if (!projectItem.getCreateUserId().equals(UserContext.getUser().getUserId())){
+            result.setCode(AppSysErrorCode.EXCEPTION.ordinal());
+            result.setMessage("该工单不属于您，不能删除");
+            return result;
+        }
+
+        projectItemService.deleteProjectItem(projectId);
+
+        result.setCode(0);
+        return result;
+    }
 }

@@ -163,4 +163,15 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     public List<ScheduleState> getSysALLSchedule() throws Exception {
         return scheduleStateMapper.getScheduleStateList();
     }
+
+    @Override
+    public ProjectItem getProjectItem(Integer projectId) throws Exception {
+
+        return projectItemMapper.selectByPrimaryKey(projectId);
+    }
+
+    @Override
+    public void deleteProjectItem(Integer projectId) throws Exception {
+        projectItemMapper.deleteProjectItem(projectId);
+    }
 }

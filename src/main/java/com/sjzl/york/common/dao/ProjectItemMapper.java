@@ -37,6 +37,8 @@ public interface ProjectItemMapper {
      */
     ProjectItem selectByPrimaryKey(Integer id);
 
+    void deleteProjectItem(Integer projectId);
+
     /**
      *
      * @param

@@ -33,4 +33,8 @@ public interface IProjectItemService {
     List<ProjectSchedule> getProjectSchedule(Integer projectId)throws Exception;
 
     List<ScheduleState> getSysALLSchedule()throws Exception;
+
+    ProjectItem getProjectItem(Integer projectId)throws Exception;
+
+    void deleteProjectItem(Integer projectId)throws Exception;
 }
