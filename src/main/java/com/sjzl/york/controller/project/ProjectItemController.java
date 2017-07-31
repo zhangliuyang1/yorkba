@@ -268,7 +268,7 @@ public class ProjectItemController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/project/startProject",method = RequestMethod.GET)
+    @RequestMapping(value = "/project/startProject",method = RequestMethod.POST)
     @ResponseBody
     public RequestResult startProject(String accessToken,Integer projectId)throws Exception{
         RequestResult result = new RequestResult();

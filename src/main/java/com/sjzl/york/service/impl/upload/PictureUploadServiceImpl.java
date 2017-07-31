@@ -41,7 +41,8 @@ public class PictureUploadServiceImpl implements IPictureUploadService {
     private String getEndPoint;
 
 
-    public PictureUploadResult uploadImageIncludeWebp(InputStream inputStream, Long contentLen, File file, String webImageUrl) throws IOException {
+    @Override
+    public PictureUploadResult uploadImageIncludeWebp(InputStream inputStream, Long contentLen) throws IOException {
         PictureUploadResult result = null;
         String url = "";
         String md5 = "";
@@ -92,10 +93,10 @@ public class PictureUploadServiceImpl implements IPictureUploadService {
 
             }
         } catch (InfoException e) {
-            logger.info("该文件格式im4java处理不了，imageurl：" + webImageUrl);
+            logger.info("该文件格式im4java处理不了");
             logger.info(ExceptionPrintUtil.printStackTrace(e));
 
-            try {
+            /*try {
                 imageInputStream = new FileImageInputStream(file);
                 WebPImageReaderSpi spi = new WebPImageReaderSpi();
                 WebPImageReader reader = new WebPImageReader(spi);
@@ -107,11 +108,11 @@ public class PictureUploadServiceImpl implements IPictureUploadService {
                 logger.info(ExceptionPrintUtil.printStackTrace(e1));
             } finally {
                 imageInputStream.close();//关闭输入流才能删除临时文件
-            }
+            }*/
         } finally {
-            if (file != null) {
+            /*if (file != null) {
                 file.delete();
-            }
+            }*/
 
         }
 

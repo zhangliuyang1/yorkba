@@ -46,8 +46,8 @@ public class PictureUploadController {
     public RequestResult uploadPicture(MultipartHttpServletRequest request)throws Exception{
         RequestResult result = new RequestResult();
 
-        String path = request.getSession().getServletContext().getRealPath("/");
-        String guid = GUIDUtil.normalGUID();
+//        String path = request.getSession().getServletContext().getRealPath("/");
+//        String guid = GUIDUtil.normalGUID();
 
         Iterator<String> it = request.getFileNames();
         if (it != null && it.hasNext()) {
@@ -63,15 +63,15 @@ public class PictureUploadController {
                     return result;
                 }
 
-                File file = new File(path + guid);
+//                File file = new File(path + guid);
 
                 InputStream inputStream = null;
                 try {
 
                     inputStream = imgFile.getInputStream();
-                    imgFile.transferTo(file);
+//                    imgFile.transferTo(file);
 
-                    PictureUploadResult uploadResult = pictureUploadService.uploadImageIncludeWebp(inputStream, contentLen, file,"");
+                    PictureUploadResult uploadResult = pictureUploadService.uploadImageIncludeWebp(inputStream, contentLen);
                     result.setCode(AppSysErrorCode.SUCCESS.ordinal());
                     result.setData(uploadResult);
                 } catch (IOException e) {
@@ -80,13 +80,11 @@ public class PictureUploadController {
                     result.setMessage("上传失败");
 
                 }finally{
-
                     try {
                         inputStream.close();
                     } catch (IOException e) {
 
                     }
-                    file.delete();
                 }
             }
         }

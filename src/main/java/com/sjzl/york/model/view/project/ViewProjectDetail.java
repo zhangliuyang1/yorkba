@@ -4,6 +4,7 @@ import com.sjzl.york.common.model.ProjectBudgetImg;
 import com.sjzl.york.common.model.ProjectCadImg;
 import com.sjzl.york.common.model.ProjectStateImg;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class ViewProjectDetail {
     private String title;
     private Integer customerId;
     private Integer status;
+    private Date startTime;
     private List<ProjectBudgetImg> budgetImgList;
     private List<ProjectCadImg> cadImgList;
     private List<ProjectStateImg> stateImgList;
@@ -52,6 +54,14 @@ public class ViewProjectDetail {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     public List<ProjectBudgetImg> getBudgetImgList() {

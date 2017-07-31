@@ -27,7 +27,7 @@
     </insert>
 
     <update id="updateUserInfo" parameterType="com.sjzl.york.model.user.PcUser">
-        update users set nick_name=#{nickName},real_name=#{realName},profile=#{profile},gender=#{gender}
+        update users set real_name=#{realName},profile=#{profile}
         where user_id = #{userId}
     </update>
 

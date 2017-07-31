@@ -100,10 +100,13 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         info.setPhoneNum(phoneNum);
         info.setAddress(address);
 
+
         if (customerId == null){
+            info.setCreateTime(timeService.getNow());
             customerInfoMapper.insertSelective(info);
             projectItemMapper.addCustomer(projectId,info.getId());
         }else {
+            info.setUpdateTime(timeService.getNow());
             customerInfoMapper.updateByPrimaryKeySelective(info);
         }
     }
@@ -116,6 +119,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
         detail.setTitle(item.getTitle());
         detail.setStatus(item.getStatus());
         detail.setCustomerId(item.getCustomerId());
+        detail.setStartTime(item.getStartTime());
         detail.setBudgetImgList(projectBudgetImgMapper.getImgListByProjectId(projectId));
         detail.setCadImgList(projectCadImgMapper.getImgListByProjectId(projectId));
         detail.setStateImgList(projectStateImgMapper.getImgListByProjectId(projectId));

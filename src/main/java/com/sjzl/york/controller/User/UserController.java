@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
@@ -336,6 +335,7 @@ public class UserController {
             result.setMessage("授权令牌失效，请重新登陆");
             return result;
         }
+        pcUser.setUserId(UserContext.getUser().getUserId());
 
         userService.updateUserInfo(pcUser);
 
