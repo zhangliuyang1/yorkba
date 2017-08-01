@@ -8,6 +8,7 @@ import com.sjzl.york.service.ITimeService;
 import com.sjzl.york.service.project.IProjectItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -43,6 +44,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addOrUpdateProject(Integer useId, Integer projectId, String title, List<ProjectBudgetImg> budgetImgs, List<ProjectCadImg> cadImgs, List<ProjectStateImg> projectStateImgs) {
         ProjectItem projectItem = new ProjectItem();
         projectItem.setId(projectId);
@@ -93,6 +95,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addOrUpadteCustomerInfo(Integer customerId, Integer projectId, String custName, String phoneNum, String address) throws Exception {
         CustomerInfo info = new CustomerInfo();
         info.setId(customerId);
@@ -132,6 +135,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void startProject(Integer projectId) throws Exception {
         ProjectItem projectItem = new ProjectItem();
         projectItem.setId(projectId);
@@ -141,6 +145,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateProjectSchedule(Integer projectId, Integer code, String stepDesc) throws Exception {
         ProjectSchedule schedule = new ProjectSchedule();
         schedule.setProjectId(projectId);
@@ -175,6 +180,7 @@ public class ProjectItemServiceImpl implements IProjectItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProjectItem(Integer projectId) throws Exception {
         projectItemMapper.deleteProjectItem(projectId);
     }
