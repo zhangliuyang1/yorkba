@@ -2,7 +2,9 @@ package com.sjzl.york.common.dao;
 
 import com.sjzl.york.common.model.SysVerifyCode;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysVerifyCodeMapper {
@@ -23,4 +25,6 @@ public interface SysVerifyCodeMapper {
     List<SysVerifyCode> getVerifyCode(String verifyCodeKey);
 
     void deleteCodeByVerifyCodeKey(@Param("verifyCodeKey") String verifyCodeKey, @Param("verifyCode") String verifyCode);
+
+    void deleteExpiredVerifyCode();
 }

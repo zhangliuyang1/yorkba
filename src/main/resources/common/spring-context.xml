@@ -16,6 +16,7 @@
     <import resource="spring/spring-mybatis.xml"/>
     <import resource="spring-elastic-job.xml"/>
     <import resource="spring/spring-aop.xml" />
+    <import resource="spring/spring-task.xml"/>
 
 
 </beans>

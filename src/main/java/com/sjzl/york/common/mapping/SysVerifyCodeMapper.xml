@@ -59,4 +59,8 @@
   <delete id="deleteCodeByVerifyCodeKey">
     delete from sys_verify_code where verify_code_key = #{verifyCodeKey} and verify_code = #{verifyCode}
   </delete>
+
+  <delete id="deleteExpiredVerifyCode">
+    delete from sys_verify_code where expire_time &lt; now()
+  </delete>
 </mapper>
