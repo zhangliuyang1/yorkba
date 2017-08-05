@@ -66,7 +66,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
             result.put("data",new ViewRequestInvalidError(ExceptionPrintUtil.printStackTrace(ex)));
 
             JSONObject jsonObject =(JSONObject) JSONObject.toJSON(result);
-            response.setHeader("Content-Type","text/html;charset=UTF-8");
+            response.setHeader("Content-Type","application/json;charset=UTF-8");
             response.getWriter().write(jsonObject.toJSONString());
             response.getWriter().close();
         } catch (IOException e) {
