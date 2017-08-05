@@ -87,7 +87,7 @@ public class AccessTokenIntercepter extends HandlerInterceptorAdapter{
         result.setCode(AppSysErrorCode.ACCESSTOKENINVALID.ordinal());
         result.setMessage("授权令牌失效，请重新登陆");
         result.setData(null);
-        response.setHeader("Content-Type","text/html;charset=UTF-8");
+        response.setHeader("Content-Type","application/json;charset=UTF-8;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(result));
         response.getWriter().close();
         return super.preHandle(request, response, handler);

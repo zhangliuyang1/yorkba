@@ -65,7 +65,7 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
         result.setCode(AppSysErrorCode.APPLICATIONPARAMINVALID.ordinal());
         result.setMessage("系统参数无效，请联系服务人员。");
         result.setData(null);
-        response.setHeader("Content-Type","text/html;charset=UTF-8");
+        response.setHeader("Content-Type","application/json;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(result));
         response.getWriter().close();
         return false;

@@ -17,12 +17,14 @@
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
     <context:component-scan base-package="com.sjzl.york.controller" />
 
+
+    <mvc:annotation-driven />
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
     <bean id="mappingJackson2HttpMessageConverter"
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes">
             <list>
-                <!--<value>text/html;charset=UTF-8</value>-->
+                <value>text/html;charset=UTF-8</value>
                 <value>application/json;charset=UTF-8</value>
             </list>
         </property>
@@ -32,13 +34,13 @@
           class="org.springframework.http.converter.StringHttpMessageConverter">
         <property name="supportedMediaTypes">
             <list>
-                <!--<value>text/plain;charset=UTF-8</value>-->
+                <value>text/plain;charset=UTF-8</value>
                 <value>application/json;charset=UTF-8</value>
             </list>
         </property>
     </bean>
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
-    <bean
+    <!--<bean
         class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
             <list>
@@ -46,7 +48,7 @@
                 <ref bean="mappingJackson2HttpMessageConverter" />
             </list>
         </property>
-    </bean>
+    </bean>-->
     <!--spring 3.x 以后使用这个代替AnnotationMethodHandlerAdapter，启动SpringMVC的注解功能-->
     <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
