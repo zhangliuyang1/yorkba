@@ -31,8 +31,8 @@ public class PictureUploadServiceImpl implements IPictureUploadService {
 
     @Autowired
     private OssUploadUtil ossUploadUtil;
-    @Value("${application.parameter.sys.user.endpoint}")
-    private String endPoint;
+   /* @Value("${application.parameter.sys.user.endpoint}")
+    private String endPoint;*/
     @Value("${application.parameter.sys.user.bucket.name}")
     private String bucketName;
     @Value("${application.parameter.sys.user.bucket.photos.directory}")
