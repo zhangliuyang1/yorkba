@@ -393,7 +393,7 @@ public class ProjectItemController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/project/deleteProject",method = RequestMethod.GET)
+    @RequestMapping(value = "/project/deleteProject",method = RequestMethod.POST)
     @ResponseBody
     public RequestResult deleteProject(String accessToken,Integer projectId)throws Exception{
 
