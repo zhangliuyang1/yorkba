@@ -8,6 +8,7 @@ import com.sjzl.york.model.user.PcUser;
 import com.sjzl.york.service.user.IUserService;
 import com.sjzl.york.util.MD5Util;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -38,28 +39,33 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void loginUpdate(PcUser user) throws Exception {
         userDao.loginUpdate(user);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertUser(PcUser pcUser) throws Exception {
         userDao.insertUser(pcUser);
     }
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateUserInfo(PcUser pcUser) throws Exception {
         userDao.updateUserInfo(pcUser);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void resetPassWord(String phoneNum, String passWord) throws Exception {
         userDao.updatePassWord(phoneNum, passWord);
     }
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updatePassWord(Integer userId, String oldPassWord, String newPassWord) throws Exception {
         Users user = usersMapper.selectByPrimaryKey(userId);
         oldPassWord = MD5Util.string2MD5(oldPassWord);
