@@ -19,9 +19,9 @@
     <context:component-scan base-package="com.sjzl.york.task" />
 
     <!--清理过期验证码任务-->
-    <bean id="ClearExpiredVerifyCodeTask" class="com.sjzl.york.task.ClearExpiredVerifyCodeTask"></bean>
+    <!--<bean id="ClearExpiredVerifyCodeTask" class="com.sjzl.york.task.ClearExpiredVerifyCodeTask"></bean>
     <task:scheduled-tasks>
         <task:scheduled ref="ClearExpiredVerifyCodeTask" method="task" cron="0 0 0/1 * * ?"/>
-    </task:scheduled-tasks>
+    </task:scheduled-tasks>-->
 
 </beans>
