@@ -26,8 +26,8 @@ public class ParameterCheckServiceImpl implements IParameterCheckService {
 
         String calSing = calSign(params);
         String sign = params.get(SIGN_STRING);
-        logger.info("签名参数:"+ JSON.toJSON(params).toString());
-        logger.info("签名sign值"+sign);
+        /*logger.info("签名参数:"+ JSON.toJSON(params).toString());
+        logger.info("签名sign值"+sign);*/
 
         return sign != null && calSing.equalsIgnoreCase(sign);
     }

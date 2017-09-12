@@ -16,6 +16,7 @@ import com.sjzl.york.util.GUIDUtil;
 import com.sjzl.york.util.MD5Util;
 import com.sjzl.york.util.StringUtil;
 import com.sjzl.york.util.URLUtil;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ import java.util.Random;
  */
 @Controller
 public class UserController {
+
+    private static Logger logger = Logger.getLogger(UserController.class);
+
     @Value("${application.parameter.sys.default.check.code.len}")
     private Integer defaultCheckCodeLen;
     @Value("${application.parameter.sys.default.check.code.range}")
@@ -204,6 +208,7 @@ public class UserController {
         if (Integer.valueOf(1).equals(insertResult)){
             //发送验证码
             String content = String.format("您的验证码是：%s，您正在通过手机注册世纪之旅账号。30分钟有效，请勿泄露。",code);
+            logger.info("手机号为："+ phoneNum +", 验证码是:" + code);
             chuangLanSmsUtil.sendMessage(phoneNum,content);
 
             result.setCode(AppSysErrorCode.SUCCESS.ordinal());

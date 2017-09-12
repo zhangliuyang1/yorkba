@@ -43,7 +43,7 @@ public class ApplicationParamIntercepter extends HandlerInterceptorAdapter {
 
         //跳过不需要验证的服务器
         String localAddr = request.getLocalAddr();
-        logger.info("服务器ip:"+localAddr);
+//        logger.info("服务器ip:"+localAddr);
         if (this.hostExceptions.contains(request.getLocalAddr())){
             return true;
         }
